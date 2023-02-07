@@ -7,7 +7,9 @@
 		<view class="item" style="text-align: center;font-weight: bold;" @click="jumpTo('../zxMultipleSelectView/index')">
 			下拉多选组件
 		</view>
-		
+		<view class="item" style="text-align: center;font-weight: bold;" @click="jumpTo('../zxComboxView/index')">
+			下拉输入框
+		</view>
 		
 	</view>
 </template>

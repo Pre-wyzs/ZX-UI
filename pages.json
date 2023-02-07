@@ -17,6 +17,12 @@
 			"style": {
 				"navigationBarTitleText": "下拉多选"
 			}
+		},
+		{
+			"path": "pages/zxComboxView/index",
+			"style": {
+				"navigationBarTitleText": "下拉输入框"
+			}
 		}
 	],
 	"globalStyle": {
