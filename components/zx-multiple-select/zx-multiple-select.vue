@@ -40,6 +40,13 @@
 				<scroll-view class="uni-select-cy-options" :scroll-y="true" v-show="active"
 					@scrolltolower="scrolltolower">
 					<template>
+						<view class="uni-add-newitem" @click.stop="''">
+							<!--这个click是为了防止点击输入框触发收起列表的操作！请不要随便删除!-->
+							<!-- <uni-easyinput v-model="newItemName" placeholder="请输入新的选项" focus /> -->
+							<input class="uni-add-newitem-input" placeholder="请输入新的选项" v-model="newItemName" />
+							<uni-icons type="checkmarkempty" size="20" :color="newitemnameShow?`#45b984`:`#fff`"
+								@click="insureAdd"></uni-icons>
+						</view>
 						<template v-if="localOptions.length > 0">
 							<view class="uni-select-cy-item"
 								:class="{ active: include(changevalue, item, slabel) > -1 }"
@@ -52,22 +59,9 @@
 								没有结果...
 							</view>
 						</template>
-						<view class="uni-select-cy-item"
-							style="color:#409eff;display: flex;justify-content: space-between;align-items: center;"
-							@click.stop="addNewItem">
-							{{ isAddNew? '取消新增':'新增选项'}}<text v-show="isAddNew" style="color: #3aff00;"
-								@click.stop="insureAdd">确认</text>
-						</view>
-						<view class="" v-show="isAddNew" style="padding: 0 20rpx;" @click.stop="''">
-							<!--这个click是为了防止点击输入框触发收起列表的操作！请不要随便删除!-->
-							<uni-easyinput v-model="newItemName" placeholder="请输入新的选项" focus />
-						</view>
 					</template>
 				</scroll-view>
-
-
 			</transition>
-
 		</view>
 		<!-- 点击非组件区域自动关闭组件 -->
 		<view class="uni-mask" v-show="active" @click="close" :style="{'z-index': zindex - 1}"></view>
@@ -137,7 +131,7 @@
 				realValue: [],
 
 				// 新增选项
-				isAddNew: false,
+				// isAddNew: false,
 				newItemName: '',
 				// 搜索的关键字
 				searchKey: '',
@@ -161,14 +155,17 @@
 				set(val) {
 					this.$emit('update:datalist', val)
 				}
+			},
+			newitemnameShow() {
+				return this.newItemName.length > 0
 			}
 		},
 		watch: {
 			searchKey(val, oldVal) {
 				if (!/^\s*$/.test(val)) {
-					console.log('缓存', this.optionsCache);
+					// console.log('缓存', this.optionsCache);
 					this.localOptions = this.optionsCache.filter(el => el[this.slabel].includes(val))
-					
+
 					// this.localOptions = tmp
 					// console.log('listing', this.localOptions);  ?? watch中computed中的属性拿不到变化的吗？
 				} else {
@@ -225,22 +222,26 @@
 				this.$emit('change', this.changevalue, this.realValue);
 			},
 			// 新增选项
-			addNewItem() {
-				this.isAddNew = !this.isAddNew;
-			},
 			insureAdd() {
-				if (this.newItemName != '') {
-					const newItem = {
-						[this.slabel]: this.newItemName,
-						[this.svalue]: this.newItemName
-					}
-					this.localOptions.push(newItem)
+				if (this.isExist(this.newItemName)) {
 					this.newItemName = ''
-					this.isAddNew = false // reset
-					return;
+					throw '新增选项已经存在'
 				}
-				// this.$toast.showError('新选项不能为空')
+				const newItem = {
+					[this.slabel]: this.newItemName,
+					[this.svalue]: this.newItemName
+				}
+				this.localOptions.unshift(newItem) // 向数组头部添加元素
+				this.newItemName = ''
 			},
+			// 判断新增的选项在原来的options中是否已经荀子啊了
+			isExist(newitemName) {
+				const res = this.localOptions.some(el => {
+					return el[this.slabel] == newitemName
+				})
+				return res
+			},
+
 			// 判断展示框中是否包含这一项数据
 			include(changevalue, item, property) {
 				if (changevalue instanceof Array && changevalue.length > 0) {
@@ -273,7 +274,6 @@
 	.uni-select-cy {
 		position: relative;
 		z-index: 999;
-
 		.uni-select-mask {
 			width: 100%;
 			height: 100%;
@@ -319,7 +319,7 @@
 		//所有清空的定位
 		.close-postion {
 			position: absolute;
-			right: 35px;
+			right: 70rpx;
 			top: 0;
 			height: 100%;
 			width: 15px;
@@ -332,17 +332,17 @@
 			flex: 1;
 			width: 0;
 			flex-wrap: wrap;
-
 			.uni-select-multiple-item {
-				margin-top: 16rpx;
-				margin-right: 10rpx;
+				// margin-bottom: 16rpx;
+				// margin-right: 10rpx;
 				background: #bbb;
 				padding: 2rpx 4rpx;
+				margin: 4rpx 10rpx 4rpx 0;
 				border-radius: 4rpx;
 				color: #fff;
 				display: flex;
 				flex: 0 0 140rpx;
-
+				// height: 48rpx;
 				.uni-select-multiple-item-row {
 					flex: 1;
 					overflow: hidden;
@@ -359,7 +359,7 @@
 			z-index: 3;
 			transition: .3s;
 			// height: 36px;
-			padding: 0px 30px 8px 10px;
+			padding: 8px 30px 8px 10px;
 			box-sizing: border-box;
 			border-radius: 4px;
 			border: 1px solid rgb(229, 229, 229);
@@ -380,30 +380,13 @@
 			}
 
 
-			.uni-select-cy-input {
-				font-size: 14px;
-				color: #999;
-				display: block;
-				width: 96%;
-				overflow: hidden;
-				text-overflow: ellipsis;
-				white-space: nowrap;
-				line-height: 30px;
-				box-sizing: border-box;
-
-				&.active {
-					color: #333;
-				}
-
-			}
-
 			.uni-select-cy-icon {
 				cursor: pointer;
 				position: absolute;
 				right: 0;
 				top: 0;
 				height: 100%;
-				width: 30px;
+				width: 60rpx;
 				display: flex;
 				align-items: center;
 				justify-content: center;
@@ -474,14 +457,14 @@
 			border-radius: 4px;
 			border: 1px solid rgb(229, 229, 229);
 			background: #fff;
-			padding: 5px 0;
+			padding: 10rpx 0;
 			box-sizing: border-box;
 			z-index: 9;
 			box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
 
 			.uni-select-cy-item {
 
-				padding: 0 10px;
+				padding: 0 20rpx;
 				box-sizing: border-box;
 				cursor: pointer;
 				line-height: 2.5;
@@ -505,8 +488,8 @@
 	}
 
 	.uni-select-search {
-		margin-top: 16rpx;
 		flex: 1;
+		margin-top: 6rpx;
 	}
 
 	.uni-select-search-noresult {
@@ -515,15 +498,25 @@
 		color: #999;
 	}
 
-	// ::v-deep .uni-input-placeholder .input-placeholder {
-	// 	font-size: 12px;
-	// }
-
-	//
 	// 是否出在选择状态
 	.uni_select_isselect {
 		border: 1px solid #409eff !important;
 		box-shadow: 0 3px 3px rgba(64, 158, 255, .1) !important;
+	}
+
+	// 新增选项
+	.uni-add-newitem {
+		margin: 16rpx 20rpx 12rpx 20rpx;
+		padding-bottom: 16rpx;
+		border-bottom: 1px solid #409eff;
+		display: flex;
+		align-items: center;
+
+		&-input {
+			font-size: 14px;
+			flex: 1;
+
+		}
 	}
 
 	.uni-mask {
@@ -532,4 +525,5 @@
 		background: transparent;
 		// background: red;
 	}
+	
 </style>
