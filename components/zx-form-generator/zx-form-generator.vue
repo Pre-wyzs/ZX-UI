@@ -1,139 +1,56 @@
-<!-- TODO：行列排布问题 -->
 <template>
-	<view class="form-container">
-		<view v-for="(item,index) in formConfig" :key="index">
-			<view v-if="item.type === 'TEXT'" class="generator-item-text">
-				<view style="display: flex;">
-					<text class="is-required" v-if="isRequierdFunc(item)">*</text>
-					<text>{{item.title}}</text>
-				</view>
-				<view class="generator-value" style="max-width: 260rpx;">
-					{{item.value}}
-				</view>
-				<!-- 边框线 -->
-				<view v-if="isBorderedFunc(item)" :class="['uni-list--border']"></view>
-			</view>
-			<!-- 输入框项目 -->
-			<view v-if="item.type === 'INPUT'" class="generator-item-input">
-				<view style="display: flex;">
-					<text class="is-required" v-if="isRequierdFunc(item)">*</text>
-					<view class="label">{{item.title}}</view>
-				</view>
-				<view class="generator-value">
-					<slot name="input" :item="item"></slot>
-				</view>
-				<!-- 边框线 -->
-				<view v-if="isBorderedFunc(item)" :class="['uni-list--border']"></view>
-			</view>
-			<!-- 时间项目 -->
-			<view v-if="item.type === 'DATETIME'" class="generator-item-input">
-				<view style="display: flex;">
-					<text class="is-required" v-if="isRequierdFunc(item)">*</text>
-					<view class="label">{{item.title}}</view>
-				</view>
-				<view class="generator-value">
-					<slot name="datetime" :item="item"></slot>
-				</view>
-				<!-- 边框线 -->
-				<view v-if="isBorderedFunc(item)" :class="['uni-list--border']"></view>
-			</view>
+	<view class="generator">
+		<view v-for="(item,i) in formConfig" :key="i">
 
-			<view v-if="item.type === 'RADIO'" class="generator-item-input">
-				<view style="display: flex;">
-					<text class="is-required" v-if="isRequierdFunc(item)">*</text>
-					<view class="label">{{item.title}}</view>
+			<block v-for="(type,j) in formTypes" :key="j">
+				<view v-if="item.type === type" class="generator-item-area">
+					<view class="generator-item-area-title">
+						<view class="generator-item-area-title-left">
+							<text class="is-required" v-if="isRequierdFunc(item)">*</text>
+							<text>{{`${item.title}`}}</text>
+						</view>
+						<view class="generator-item-area-title-right">
+							<slot :name="type + 'Right'" :item="item"></slot>
+						</view>
+					</view>
+					<view class="generator-item-area-body">
+						<slot :name="type + 'Body'" :item="item"></slot>
+					</view>
+					<view v-if="isBorderedFunc(item)" :class="['uni-list--border']"></view>
 				</view>
-				<view class="generator-value">
-					<slot name="radio" :item="item"></slot>
-				</view>
-				<!-- 边框线 -->
-				<view v-if="isBorderedFunc(item)" :class="['uni-list--border']"></view>
-			</view>
-			<view v-if="item.type === 'SELECT'" class="generator-item-input">
-				<view style="display: flex;">
-					<text class="is-required" v-if="isRequierdFunc(item)">*</text>
-					<view class="label">{{item.title}}</view>
-				</view>
-				<view class="generator-value">
-					<slot name="select" :item="item"></slot>
-				</view>
-				<!-- 边框线 -->
-				<view v-if="isBorderedFunc(item)" :class="['uni-list--border']"></view>
-			</view>
-			<!-- RADIO,SELECT,IMAGE,IMAGESTATIC,CHECKBOX -->
-			<view v-if="item.type === 'IMAGE'" class="generator-item-input">
-				<view style="display: flex;">
-					<text class="is-required" v-if="isRequierdFunc(item)">*</text>
-					<view class="label">{{item.title}}</view>
-				</view>
-				<view class="generator-value">
-					<slot name="image" :item="item"></slot>
-				</view>
-				<!-- 边框线 -->
-				<view v-if="isBorderedFunc(item)" :class="['uni-list--border']"></view>
-			</view>
-			<view v-if="item.type === 'IMAGESTATIC'" class="generator-item-input">
-				<view style="display: flex;">
-					<text class="is-required" v-if="isRequierdFunc(item)">*</text>
-					<view class="label">{{item.title}}</view>
-				</view>
-				<view class="generator-value">
-					<slot name="imagestatic" :item="item"></slot>
-				</view>
-				<!-- 边框线 -->
-				<view v-if="isBorderedFunc(item)" :class="['uni-list--border']"></view>
-			</view>
-			<view v-if="item.type === 'CHECKBOX'" class="generator-item-input">
-				<view style="display: flex;">
-					<text class="is-required" v-if="isRequierdFunc(item)">*</text>
-					<view class="label">{{item.title}}</view>
-				</view>
-				<view class="generator-value">
-					<slot name="checktbox" :item="item"></slot>
-				</view>
-				<!-- 边框线 -->
-				<view v-if="isBorderedFunc(item)" :class="['uni-list--border']"></view>
-			</view>
+			</block>
+			<!-- 中继区 -->
+			<!-- 		<slot></slot> -->
 
 			<!-- 递归区 -->
 			<view v-if="item.children">
 				<zx-form-generator :formConfig="item.children" :styleConfig="styleConfig" :requierd="requierd"
-					:border="border">
-					<template #input="{item}">
-						<slot name="input" :item="item"></slot>
+					:border="border" :formTypes="formTypes">
+					<!-- 右边的内容渲染 -->
+					<template #[el.right]="{item}" v-for="el in formTypesLoc">
+						<slot :name="el.right" :item="item">
+						</slot>
 					</template>
-					<template #datetime="{item}">
-						<slot name="datetime" :item="item"></slot>
-					</template>
-					<template #radio="{item}">
-						<slot name="radio" :item="item"></slot>
-					</template>
-					<template #select="{item}">
-						<slot name="select" :item="item"></slot>
-					</template>
-					<template #image="{item}">
-						<slot name="image" :item="item"></slot>
-					</template>
-					<template #imagestatic="{item}">
-						<slot name="imagestatic" :item="item"></slot>
-					</template>
-					<template #checkbox="{item}">
-						<slot name="checktbox" :item="item"></slot>
+					<!-- body内容的渲染 -->
+					<template #[el.body]="{item}" v-for="el in formTypesLoc">
+						<slot :name="el.body" :item="item">
+						</slot>
 					</template>
 				</zx-form-generator>
 			</view>
 
-			<!-- 错误提示 -->
-			<transition enter-active-class="animate__animated animate__fadeInDown" leave-active-class="animate__animated animate__fadeOutDown">
-				<view class="error-toast" v-if="errorLoc.isShow">
+			<!-- 信息提示 -->
+			<transition enter-active-class="animate__animated animate__fadeInDown"
+				leave-active-class="animate__animated animate__fadeOutDown">
+				<view class="info-toast" v-if="infoLoc.isShow">
 					<view class="icon">
-						<uni-icons v-if="!errorLoc.isSuccess" type="close" size="36" color="#ff8080"></uni-icons>
+						<uni-icons v-if="!infoLoc.isSuccess" type="close" size="36" color="#ff8080"></uni-icons>
 						<uni-icons v-else type="checkbox" size="36" color="#79ff4d"></uni-icons>
 					</view>
-					<view class="text" :style="{color: errorLoc.isSuccess ? '#79ff4d' : '#ff8080'}">
-						{{errorLoc.text}}
+					<view class="text" :style="{color: infoLoc.isSuccess ? '#79ff4d' : '#ff8080'}">
+						{{infoLoc.text}}
 					</view>
-				</view>		
+				</view>
 			</transition>
 		</view>
 	</view>
@@ -144,6 +61,10 @@
 	export default {
 		name: 'zxFormGenerator',
 		props: {
+			formTypes: {
+				type: Array,
+				default: () => ['TEXT', 'INPUT']
+			},
 			formConfig: {
 				type: Array,
 				default: () => []
@@ -163,8 +84,8 @@
 				type: Function,
 				default: () => null
 			},
-			// 是否显示错误信息
-			error: {
+			// 显示提交的信息
+			info: {
 				type: Object,
 				default: () => ({
 					isShow: false,
@@ -179,14 +100,24 @@
 			}
 		},
 		computed: {
-			errorLoc: {
+			infoLoc: {
 				get() {
-					return this.error
+					return this.info
 				},
 				set(val) {
-					this.$emit('update:error', val)
+					this.$emit('update:info', val)
 				}
+			},
+			formTypesLoc() {
+				return this.formTypes.map(el => {
+					return {
+						right: el + 'Right',
+						body: el + 'Body'
+					}
+				})
 			}
+
+
 		},
 		created() {
 			// 如果传了样式配置函数就可以进行单独的样式配置了
@@ -221,8 +152,8 @@
 </script>
 
 <style lang="scss" scoped>
-	.form-container {
-		padding: 0 10px;
+	.generator {
+		padding: 0 0px 0 10px;
 	}
 
 	.is-required {
@@ -230,6 +161,29 @@
 		color: #f56c6c;
 		margin-right: 5px;
 	}
+
+	.generator-item-area {
+		position: relative;
+
+		&-title {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+
+			&-left {
+				display: flex;
+				align-items: center;
+			}
+
+			&-right {}
+
+		}
+
+		&-body {
+			// background: red;
+		}
+	}
+
 
 	.generator-item-text {
 		display: flex;
@@ -266,8 +220,8 @@
 
 	.uni-list--border {
 		position: absolute;
-		// top: 0;
-		bottom: 0;
+		top: 0;
+		// bottom: 0;
 		right: 0;
 		left: 0;
 		/* #ifdef APP-NVUE */
@@ -280,8 +234,8 @@
 	/* #ifndef APP-NVUE */
 	.uni-list--border:after {
 		position: absolute;
-		// top: 0;
-		bottom: 0;
+		top: 0;
+		// bottom: 0;
 		right: 0;
 		left: 0;
 		height: 1px;
@@ -293,7 +247,7 @@
 
 	/* #endif */
 
-	.error-toast {
+	.info-toast {
 		width: 60%;
 		height: 100px;
 		border-radius: 10px 10px;
@@ -301,8 +255,8 @@
 		padding: 10px 8px;
 		font-size: 16px;
 		// background: rgba(255, 128, 128, .1);
-		background: rgba(0,0,0,.1);
-		
+		background: rgba(0, 0, 0, .1);
+
 		// box-shadow: 1px 1px 1px 1px rgba(0,0,0,.1);
 		box-shadow: 0 5px 5px rgba(0, 0, 0, 0.1);
 		position: fixed;
@@ -312,9 +266,11 @@
 		right: 0;
 		margin: auto;
 		z-index: 99;
+
 		.icon {
 			text-align: center;
 		}
+
 		.text {
 			text-align: center;
 			margin-top: 10px;

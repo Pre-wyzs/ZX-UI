@@ -11,7 +11,7 @@ export const formConfig = [
 	{
 		title: '监测对象',
 		key: '',
-		value: 0,
+		value: '徐婕如',
 		type: 'TEXT',
 		prop: 'monitorObject', //后端的对应的键名
 		dics: [
@@ -106,8 +106,8 @@ export const formConfig = [
 					{
 						title: '你好急',
 						key: '',
-						value: [],
-						type: 'IMAGE',
+						value: '',
+						type: 'INPUT',
 						prop: 'scenePhoto', //后端的对应的键名
 					},
 					{
