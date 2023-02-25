@@ -2,24 +2,19 @@
 	<view class="container">
 		<zx-form-generator :formConfig="formConfig" :styleConfig="styleConfig" :requierd="true" :border="true"
 			:info.sync="info">
-
 			<template #TEXTRight="{item}">
 				<view style="padding:10px 0px 10px 5px;color:red;">{{item.value}}</view>
 			</template>
-
 			<template #INPUTRight="{item}">
 				<view style="padding: 10px 0px 10px 5px;background-color: #fff;">
 					<uni-easyinput v-model="item.value" placeholder="请输入内容" :styles="{borderColor: `#b3deff`}">
 					</uni-easyinput>
 				</view>
-
 			</template>
 			<template #INPUTBody="{item}">
 				<uni-easyinput v-model="item.value" placeholder="请输入内容" :styles="{borderColor: `#b3deff`}">
 				</uni-easyinput>
 			</template>
-
-
 		</zx-form-generator>
 		<view class="" style="text-align: center;font-weight: bold;" @click="submit">
 			提交

@@ -1,0 +1,11 @@
+
+.flex-row {
+		display: flex;
+		align-items: center;
+}
+.right {
+		background: red;
+/* 		width: 200rpx;
+		height: 100rpx; */
+}
+

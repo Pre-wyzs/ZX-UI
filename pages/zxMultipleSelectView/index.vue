@@ -1,16 +1,12 @@
 <template>
-	<view class="content" @click="handleClick">
+	<view class="content">
 			<view class="item">示例：</view>
-
 			<zx-multiple-select placeholder="请选择项目" 
 				:options.sync="options" 
 				:datalist.sync="datalist" 
-				@change="change" 
 				:showClearIcon="true"
-				
-				ref="selectCyRef"
-			></zx-multiple-select>
-		
+				@change="change" 
+				:disabled="false"	></zx-multiple-select>
 	</view>
 </template>
 

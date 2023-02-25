@@ -1,0 +1,12 @@
+$prefix: zx-;
+// Color
+$primary-color: #45b984;
+// @primary-color: #ff3300;
+$primary1-color: fade($primary-color, 45%);
+$primary2-color: fade($primary-color, 15%);
+$link-color: $primary-color;
+$blue-color: #3b91ff; //info
+$green-color: #13ce66; //success
+$yellow-color: #ffae00; //warn
+$red-color: #e11617; //error
+$white-color: #ffffff;

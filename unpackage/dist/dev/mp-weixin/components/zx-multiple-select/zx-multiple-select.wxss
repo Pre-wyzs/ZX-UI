@@ -1,0 +1,251 @@
+@charset "UTF-8";
+/**
+ * 这里是uni-app内置的常用样式变量
+ *
+ * uni-app 官方扩展插件及插件市场（https://ext.dcloud.net.cn）上很多三方插件均使用了这些样式变量
+ * 如果你是插件开发者，建议你使用scss预处理，并在插件代码中直接使用这些变量（无需 import 这个文件），方便用户通过搭积木的方式开发整体风格一致的App
+ *
+ */
+/**
+ * 如果你是App开发者（插件使用者），你可以通过修改这些变量来定制自己的插件主题，实现自定义主题功能
+ *
+ * 如果你的项目同样使用了scss预处理，你也可以直接在你的 scss 代码中使用如下变量，同时无需 import 这个文件
+ */
+/* 颜色变量 */
+/* 行为相关颜色 */
+/* 文字基本颜色 */
+/* 背景颜色 */
+/* 边框颜色 */
+/* 尺寸变量 */
+/* 文字尺寸 */
+/* 图片尺寸 */
+/* Border Radius */
+/* 水平间距 */
+/* 垂直间距 */
+/* 透明度 */
+/* 文章场景相关 */
+/** 关闭图片的icon */
+.zx-multiple-select {
+  position: relative;
+  z-index: 999;
+  /** 容器部分：属性的声明顺序->定位->盒子填充->颜色->字体->动画->用户->层级*/
+}
+.zx-multiple-select__container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  flex-wrap: nowrap;
+  box-sizing: border-box;
+  padding: 8px 30px 8px 10px;
+  border-radius: 4px;
+  border: 1px solid #e5e5e5;
+  color: #999;
+  font-size: 14px;
+  transition: .3s;
+  -webkit-user-select: none;
+          user-select: none;
+  z-index: 3;
+  /* 删除按钮样式*/
+  /* 多选盒子 */
+}
+.zx-multiple-select__container-disabled {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.5);
+  cursor: no-drop;
+  z-index: 19;
+}
+.zx-multiple-select__container-icon {
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: 100%;
+  width: 60rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+.zx-multiple-select__container-icon text {
+  display: block;
+  width: 0;
+  height: 0;
+  border-width: 12rpx 12rpx 0;
+  border-style: solid;
+  border-color: #bbb transparent transparent;
+  transition: .3s;
+}
+.zx-multiple-select__container-icon.disabled {
+  cursor: no-drop;
+}
+.zx-multiple-select__container-icon.disabled text {
+  position: relative;
+  width: 20rpx;
+  height: 20rpx;
+  border-radius: 50%;
+  border: 2px solid #ff0000;
+  transition: .3s;
+  z-index: 999;
+}
+.zx-multiple-select__container-icon.disabled text::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  margin-top: -1px;
+  background: #ff0000;
+  -webkit-transform: rotate(45deg);
+          transform: rotate(45deg);
+}
+.zx-multiple-select__container.active .zx-multiple-select__container-icon text {
+  -webkit-transform: rotate(180deg);
+          transform: rotate(180deg);
+}
+.zx-multiple-select__container-clear {
+  height: 100%;
+  width: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 3;
+  cursor: pointer;
+  position: absolute;
+  right: 70rpx;
+  top: 0;
+  height: 100%;
+  width: 15px;
+}
+.zx-multiple-select__container-clear text {
+  position: relative;
+  background: #fff;
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  border: 1px solid #bbb;
+}
+.zx-multiple-select__container-clear text::before, .zx-multiple-select__container-clear text::after {
+  content: "";
+  position: absolute;
+  left: 20%;
+  top: 50%;
+  height: 1px;
+  width: 60%;
+  -webkit-transform: rotate(45deg);
+          transform: rotate(45deg);
+  background-color: #bbb;
+}
+.zx-multiple-select__container-clear text::after {
+  -webkit-transform: rotate(-45deg);
+          transform: rotate(-45deg);
+}
+.zx-multiple-select__container-show {
+  max-width: 90%;
+  display: flex;
+  flex: 1;
+  width: 0;
+  flex-wrap: wrap;
+}
+.zx-multiple-select__container-show-item {
+  background: #bbb;
+  padding: 2rpx 4rpx;
+  margin: 4rpx 10rpx 4rpx 0;
+  border-radius: 4rpx;
+  color: #fff;
+  display: flex;
+  flex: 0 0 140rpx;
+}
+.zx-multiple-select__container-show-item-label {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.zx-multiple-select__container-show-item-icon {
+  height: 100%;
+  width: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 3;
+  cursor: pointer;
+}
+.zx-multiple-select__container-show-item-icon text {
+  position: relative;
+  background: #fff;
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  border: 1px solid #bbb;
+}
+.zx-multiple-select__container-show-item-icon text::before, .zx-multiple-select__container-show-item-icon text::after {
+  content: "";
+  position: absolute;
+  left: 20%;
+  top: 50%;
+  height: 1px;
+  width: 60%;
+  -webkit-transform: rotate(45deg);
+          transform: rotate(45deg);
+  background-color: #bbb;
+}
+.zx-multiple-select__container-show-item-icon text::after {
+  -webkit-transform: rotate(-45deg);
+          transform: rotate(-45deg);
+}
+.zx-multiple-select__container-show-search {
+  flex: 1;
+  margin-top: 6rpx;
+}
+.zx-multiple-select__containerselect {
+  border: 1px solid #409eff !important;
+  box-shadow: 0 3px 3px rgba(64, 158, 255, 0.1) !important;
+}
+.zx-multiple-select__options {
+  -webkit-user-select: none;
+          user-select: none;
+  position: absolute;
+  top: calc(100% + 5px);
+  left: 0;
+  width: 100%;
+  height: 500rpx;
+  border-radius: 4px;
+  border: 1px solid #e5e5e5;
+  background: #fff;
+  padding: 10rpx 0;
+  box-sizing: border-box;
+  z-index: 9;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+}
+.zx-multiple-select__options-item {
+  padding: 0 20rpx;
+  box-sizing: border-box;
+  cursor: pointer;
+  line-height: 2.5;
+  transition: .3s;
+  font-size: 14px;
+}
+.zx-multiple-select__options-item.active {
+  color: #409eff;
+  background-color: #f5f7fa;
+}
+.zx-multiple-select__options-noresult {
+  padding: 0 10px;
+  font-size: 14px;
+  color: #999;
+}
+.zx-multiple-select__options-addnew {
+  margin: 16rpx 20rpx 12rpx 20rpx;
+  padding-bottom: 16rpx;
+  border-bottom: 1px solid #409eff;
+  display: flex;
+  align-items: center;
+}
+.zx-multiple-select__options-addnew-input {
+  font-size: 14px;
+  flex: 1;
+}
+

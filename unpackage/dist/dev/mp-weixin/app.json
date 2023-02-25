@@ -1,0 +1,18 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/zxFormGeneratorView/index",
+    "pages/zxMultipleSelectView/index",
+    "pages/zxComboxView/index",
+    "pages/test/test",
+    "pages/zxStaticImgView/index"
+  ],
+  "subPackages": [],
+  "window": {
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "select-cy",
+    "navigationBarBackgroundColor": "#F8F8F8",
+    "backgroundColor": "#F8F8F8"
+  },
+  "usingComponents": {}
+}

@@ -23,6 +23,18 @@
 			"style": {
 				"navigationBarTitleText": "下拉输入框"
 			}
+		},
+		{
+			"path": "pages/test/test",
+			"style": {
+				"navigationBarTitleText": "测试页面"
+			}
+		},
+		{
+			"path": "pages/zxStaticImgView/index",
+			"style": {
+				"navigationBarTitleText": "图片组件"
+			}
 		}
 	],
 	"globalStyle": {

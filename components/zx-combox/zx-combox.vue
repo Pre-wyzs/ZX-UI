@@ -1,4 +1,4 @@
-<!-- TODO:输入框点击动画效果 -->
+
 <template>
 	<view class="uni-combox" :class="!border?'uni-combox__no-border':(showSelector?'uni-combox__selector-border':'') ">
 		<view v-if="label" class="uni-combox__label" :style="labelStyle">
@@ -136,7 +136,7 @@
 			onBlur() {
 				setTimeout(() => {
 					this.showSelector = false
-				}, 153)
+				}, 150)
 			},
 			onSelectorClick(index) {
 				this.inputVal = this.filterCandidates[index]

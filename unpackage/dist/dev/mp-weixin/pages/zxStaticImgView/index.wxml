@@ -1,0 +1,1 @@
+<view><view style="background:red;"><zx-static-img vue-id="06f45cd0-1" images="{{images}}" rowSpace="0rpx" colSpace="8rpx" bind:__l="__l"></zx-static-img></view></view>

@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "图片组件",
+  "usingComponents": {
+    "zx-static-img": "/components/zx-static-img/zx-static-img"
+  }
+}

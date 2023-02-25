@@ -1,0 +1,7 @@
+{
+  "usingComponents": {
+    "zx-form-generator": "/components/zx-form-generator/zx-form-generator",
+    "uni-icons": "/uni_modules/uni-icons/components/uni-icons/uni-icons"
+  },
+  "component": true
+}

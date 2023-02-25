@@ -1,0 +1,10 @@
+{
+  "component": true,
+  "usingComponents": {
+    "index-zx-form-generator-TEXTRight": "/pages/zxFormGeneratorView/index-zx-form-generator-TEXTRight",
+    "index-zx-form-generator-INPUTRight": "/pages/zxFormGeneratorView/index-zx-form-generator-INPUTRight",
+    "index-zx-form-generator-INPUTBody": "/pages/zxFormGeneratorView/index-zx-form-generator-INPUTBody",
+    "zx-form-generator": "/components/zx-form-generator/zx-form-generator",
+    "uni-easyinput": "/uni_modules/uni-easyinput/components/uni-easyinput/uni-easyinput"
+  }
+}

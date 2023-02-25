@@ -1,5 +1,9 @@
 <template>
 	<view>
+		
+		<view class="item" style="text-align: center;font-weight: bold;" @click="jumpTo('../test/test')">
+			测试页面
+		</view>
 		<view class="item" style="text-align: center;font-weight: bold;" @click="jumpTo('../zxFormGeneratorView/index')">
 			表单生成组件
 		</view>
@@ -9,6 +13,10 @@
 		</view>
 		<view class="item" style="text-align: center;font-weight: bold;" @click="jumpTo('../zxComboxView/index')">
 			下拉输入框
+		</view>
+		
+		<view class="item" style="text-align: center;font-weight: bold;" @click="jumpTo('../zxStaticImgView/index')">
+			图片组件
 		</view>
 		
 	</view>
