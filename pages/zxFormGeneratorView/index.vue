@@ -1,7 +1,7 @@
 <template>
 	<view class="container">
 		<zx-form-generator :formConfig="formConfig" :styleConfig="styleConfig" :requierd="true" :border="true"
-			:info.sync="info">
+			:info="info">
 			<template #TEXTRight="{item}">
 				<view style="padding:10px 0px 10px 5px;color:red;">{{item.value}}</view>
 			</template>
@@ -12,8 +12,10 @@
 				</view>
 			</template>
 			<template #INPUTBody="{item}">
-				<uni-easyinput v-model="item.value" placeholder="请输入内容" :styles="{borderColor: `#b3deff`}">
-				</uni-easyinput>
+				<div class="" style="padding-bottom: 15px;">
+					<uni-easyinput v-model="item.value" placeholder="请输入内容" :styles="{borderColor: `#b3deff`}">
+					</uni-easyinput>
+				</div>
 			</template>
 		</zx-form-generator>
 		<view class="" style="text-align: center;font-weight: bold;" @click="submit">
@@ -34,8 +36,8 @@
 				formConfig: deepCopy(formConfig),
 				info: {
 					isShow: false,
-					isSuccess: true,
-					text: '提交成功!'
+					isSuccess: false,
+					text: '提交失败!'
 				},
 				isInSubmit: false, // 是否在提交过程中
 			}
@@ -43,9 +45,9 @@
 		methods: {
 			styleConfig(formConfig) {
 				formConfig.forEach(el => {
-					if (el.title === '详细条目') {
-						el.required = true
-						// el.border = false
+					if (el.title === '监测对象') {
+						el.required = false
+						el.border = true
 					}
 				})
 			},

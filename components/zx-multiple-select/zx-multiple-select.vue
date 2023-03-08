@@ -42,10 +42,10 @@
 						<uni-icons type="checkmarkempty" size="20" :color="newItemName.length>0?`#45b984`:`#fff`"
 							@click="newItemName.length>0?insureAdd():''"></uni-icons>
 					</view>
-					<template v-if="localOptions.length > 0">
+					<template v-if="optionsLoc.length > 0">
 						<view class="zx-multiple-select__options-item"
 							:class="{ active: include(changevalue, item, slabel) > -1 }"
-							v-for="(item, index) in localOptions" :key="index" @click.stop="handleChange(item)">
+							v-for="(item, index) in optionsLoc" :key="index" @click.stop="handleChange(item)">
 							{{ item[slabel] }}
 						</view>
 					</template>
@@ -107,7 +107,7 @@
 			options: {
 				type: Array,
 				default () {
-					return [];
+					return []
 				}
 			},
 			placeholder: {
@@ -143,19 +143,10 @@
 				realValue: [],
 				newItemName: '',
 				searchKey: '',
-				optionsCache: [], // 原options字典缓存
-				isCached: false,
-			};
+				optionsLoc: [], // 原options字典缓存
+			}
 		},
 		computed: {
-			localOptions: { //本地列表
-				get() {
-					return this.options
-				},
-				set(val) {
-					this.$emit('update:options', val)
-				}
-			},
 			changevalue: { //本地选中的数据
 				get() {
 					return this.datalist
@@ -166,19 +157,20 @@
 			}
 		},
 		watch: {
-			searchKey(val, oldVal) {
-				if (!/^\s*$/.test(val)) {
-					this.localOptions = this.optionsCache.filter(el => el[this.slabel].includes(val))
-				} else {
-					this.localOptions = this.optionsCache // 恢复缓存
-				}
+			options: {
+				handler(val) {
+					this.optionsLoc = val
+				},
+				immediate: true
+			},
+			searchKey(val) {
+				// 优美的代码，这里如果val是 ''的话，那么所有的选项中都包含''，所以所有的列表都会展示出来的。根本就不需要什么缓存。。。
+				this.optionsLoc = this.options.filter(el => el[this.slabel].includes(val))
 			}
 		},
 		created() {
-			if (this.changevalue.length > 0) { //说明有初始的数据的
+			if (this.changevalue.length > 0)  //说明有初始的数据的
 				this.realValue = this.changevalue.map(el => el[this.svalue])
-			}
-			this.optionsCache = this.options
 		},
 		methods: {
 			close(e) {
@@ -191,36 +183,36 @@
 			},
 			//点击展示选项
 			handleSelect() {
-				if (this.disabled) return;
-				this.active = true;
+				if (this.disabled) return
+				this.active = true
 			},
 			//移除数据
 			handleRemove(index) {
 				if (index === null) {
-					this.realValue = [];
-					this.changevalue = [];
+					this.realValue = []
+					this.changevalue = []
 				} else {
-					this.realValue.splice(index, 1);
-					this.changevalue.splice(index, 1);
+					this.realValue.splice(index, 1)
+					this.changevalue.splice(index, 1)
 					this.$emit('del', index)
 				}
-				this.$emit('change', this.changevalue, this.realValue);
+				this.$emit('change', this.changevalue, this.realValue)
 			},
 			//点击组件列
 			handleChange(item) {
-				let arrIndex = this.realValue.indexOf(item[this.svalue]);
-				// console.log('arrIndex',arrIndex);
+				let arrIndex = this.realValue.indexOf(item[this.svalue])
+				// console.log('arrIndex',arrIndex)
 				if (arrIndex > -1) {
-					this.changevalue.splice(arrIndex, 1);
-					this.realValue.splice(arrIndex, 1);
+					this.changevalue.splice(arrIndex, 1)
+					this.realValue.splice(arrIndex, 1)
 					this.$emit('del', arrIndex)
 				} else {
-					this.changevalue.push(item);
-					this.realValue.push(item[this.svalue]);
+					this.changevalue.push(item)
+					this.realValue.push(item[this.svalue])
 					this.$emit('add', item[this.svalue])
 				}
 				// console.log(this.realValue, 'this.realValue')
-				this.$emit('change', this.changevalue, this.realValue);
+				this.$emit('change', this.changevalue, this.realValue)
 			},
 			// 新增选项
 			insureAdd() {
@@ -229,43 +221,30 @@
 						this.newItemName = ''
 						throw new Error('新增项已存在!')
 					}
-					this.localOptions.unshift({ // 向数组头部添加元素
+					this.optionsLoc.unshift({ // 向数组头部添加元素
 						[this.slabel]: this.newItemName,
 						[this.svalue]: this.newItemName
 					})
 					this.newItemName = ''
 				} catch (e) {
-					console.log('Error!', e.message, this.newItemName);
+					console.log('Error!', e.message, this.newItemName)
 				}
 			},
 			// 判断新增的选项在原来的options中是否已存在
 			isExist(newitemName) {
-				return this.localOptions.some(el => el[this.slabel] == newitemName)
+				return this.optionsLoc.some(el => el[this.slabel] == newitemName)
 			},
 			// 判断展示框中是否包含这一项数据
 			include(changevalue, item, property) {
-				if (changevalue instanceof Array && changevalue.length > 0) {
-					return changevalue.findIndex(el => {
-						return el[property] === item[property]
-					});
-				} else {
-					return -1
-				}
+				if (changevalue instanceof Array && changevalue.length > 0)
+					return changevalue.findIndex(el => el[property] === item[property])
+				return -1
 			},
 			onBlur(e) {
-				// this.searchKey = ''
-				// this.localOptions = this.optionsCache 
-				// 处理有搜索结果的情况
-				if (!/^\s*$/.test(this.searchKey) && this.localOptions.length > 0) {
-					setTimeout(() => {
-						this.searchKey = ''
-					}, 10)
-				} else {
-					this.searchKey = ''
-				}
+				this.searchKey = ''
 			}
 		}
-	};
+	}
 </script>
 
 <style lang="scss">

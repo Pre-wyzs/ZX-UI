@@ -6,7 +6,7 @@
 				<view v-if="item.type === type" class="zx-form-generator__item">
 					<view class="zx-form-generator__item-title">
 						<view class="zx-form-generator__item-title-left">
-							<text class="zx-form-generator__item-title-left-required" v-if="isRequierdFunc(item)">*</text>
+							<text class="zx-form-generator__item-title-left-required" v-if="itemRequired(item)">*</text>
 							<text>{{`${item.title}`}}</text>
 						</view>
 						<view class="zx-form-generator__item-title-right">
@@ -16,7 +16,7 @@
 					<view class="zx-form-generator__item-body">
 						<slot :name="type + 'Body'" :item="item"></slot>
 					</view>
-					<view v-if="isBorderedFunc(item)" :class="['zx-form-generator__item-border']"></view>
+					<view v-if="itemBorder(item)" class="zx-form-generator__item-border"></view>
 				</view>
 			</block>
 
@@ -26,34 +26,31 @@
 					:border="border" :formTypes="formTypes">
 					<!-- 右边的内容渲染 -->
 					<template #[el.right]="{item}" v-for="el in formTypesLoc">
-						<slot :name="el.right" :item="item">
-						</slot>
+						<slot :name="el.right" :item="item"></slot>
 					</template>
 					<!-- body内容的渲染 -->
 					<template #[el.body]="{item}" v-for="el in formTypesLoc">
-						<slot :name="el.body" :item="item">
-						</slot>
+						<slot :name="el.body" :item="item"></slot>
 					</template>
 				</zx-form-generator>
 			</view>
-
-			<!-- 信息提示 -->
-			<transition enter-active-class="animate__animated animate__fadeInDown"
-				leave-active-class="animate__animated animate__fadeOutDown">
-				<view class="zx-form-generator__info" v-if="infoLoc.isShow">
-					<view class="zx-form-generator__info-icon">
-						<uni-icons v-if="!infoLoc.isSuccess" type="close" size="36" color="#ff8080"></uni-icons>
-						<uni-icons v-else type="checkbox" size="36" color="#79ff4d"></uni-icons>
-					</view>
-					<view class="zx-form-generator__info-text" :style="{color: infoLoc.isSuccess ? '#79ff4d' : '#ff8080'}">
-						{{infoLoc.text}}
-					</view>
-				</view>
-			</transition>
 		</view>
+		<!-- 信息提示 -->
+		<transition enter-active-class="animate__animated animate__fadeInDown"
+			leave-active-class="animate__animated animate__fadeOutDown">
+			<view class="zx-form-generator__info" v-if="info.isShow">
+				<view class="zx-form-generator__info-icon">
+					<!-- TODO：图标显示的问题待优化!（有时候当弹出信息框的时候，图标不会第一时间就出现，而是会等一会才出现，这就很难搞...） -->
+					<uni-icons v-if="info.isSuccess" type="checkbox" size="36" color="#79ff4d"></uni-icons>
+					<uni-icons v-else type="close" size="36" color="#ff8080"></uni-icons>
+				</view>
+				<view class="zx-form-generator__info-text" :style="{color: info.isSuccess ? '#79ff4d' : '#ff8080'}">
+					{{info.text}}
+				</view>
+			</view>
+		</transition>
 	</view>
 </template>
-
 <script>
 	// import zxFormGenerator from './zx-form-generator.vue'
 	export default {
@@ -93,48 +90,28 @@
 			}
 		},
 		data() {
-			return {
-				flag: false,
-			}
+			return {}
 		},
 		computed: {
-			infoLoc: {
-				get() {
-					return this.info
-				},
-				set(val) {
-					this.$emit('update:info', val)
-				}
-			},
 			formTypesLoc() {
-				return this.formTypes.map(el => {
-					return {
-						right: el + 'Right',
-						body: el + 'Body'
-					}
-				})
+				return this.formTypes.map(el => ({
+					right: el + 'Right',
+					body: el + 'Body'
+				}))
 			}
 		},
 		created() {
+			console.log('子组件创建成功Le');
 			// 如果传了样式配置函数就可以进行单独的样式配置了
 			this.styleConfig && this.styleConfig(this.formConfig)
 		},
 		methods: {
-			isRequierdFunc(item) {
-				if (item.required == undefined) {
-					return this.requierd
-				} else {
-					if (item.required === this.requierd) return this.requierd
-					return item.required
-				}
+			itemRequired(item) {
+				// 一种覆盖的思路，如果item.required有值的话，就返回它本身，否则返回??后面默认的值
+				return item.required ?? this.requierd
 			},
-			isBorderedFunc(item) {
-				if (item.border == undefined) {
-					return this.border
-				} else {
-					if (item.border === this.border) return this.border
-					return item.border
-				}
+			itemBorder(item) {
+				return item.border ?? this.border
 			},
 
 		}
@@ -142,5 +119,5 @@
 </script>
 
 <style lang="scss">
-@import "styles/zx-form-generator.scss";
+	@import "styles/zx-form-generator.scss";
 </style>

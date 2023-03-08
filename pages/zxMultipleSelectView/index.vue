@@ -2,7 +2,7 @@
 	<view class="content">
 			<view class="item">示例：</view>
 			<zx-multiple-select placeholder="请选择项目" 
-				:options.sync="options" 
+				:options="options" 
 				:datalist.sync="datalist" 
 				:showClearIcon="true"
 				@change="change" 

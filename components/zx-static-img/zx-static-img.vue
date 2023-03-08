@@ -59,27 +59,21 @@
 			// 行间距
 			rowSpace: {
 				type: String,
-				default: () => {
-					return '0rpx'
-				}
+				default:`0rpx`
 			},
 			// 列间距
 			colSpace: {
 				type: String,
-				default: () => {
-					return `0rpx`
-				}
+				default: `0rpx`
 			},
 			// imageStyle
 			imageStyle: {
 				type: Object,
-				default: () => {
-					return {
-						width: `200rpx`,
-						height: `200rpx`,
-						'border-radius': `5px`
-					}
-				}
+				default: () => ({
+					width: `200rpx`,
+					height: `200rpx`,
+					'border-radius': `5px`
+				})
 			}
 		},
 		data() {
@@ -127,8 +121,8 @@
 				let images = this.images
 				// 这个组件对于加载base64的图片是问题的，这个还需要解决
 				if (typeof this.images === 'string')
-					images = this.images.split(',')  // 覆盖操作
-				
+					images = this.images.split(',') // 覆盖操作
+
 				// if (typeof this.images === 'string' && !this.images.includes('data:img/'))
 				// 	images = this.images.split(',')
 

@@ -1,9 +1,10 @@
 	$prefix: zx-;
 	$zxFormGenenator: '#{$prefix}form-generator';
 	.#{$zxFormGenenator} {
-		padding: 0 0px 0 10px;
+		padding: 0 0 0 10px;
 
 		&__item {
+			position: relative;
 			&-title {
 				display: flex;
 				justify-content: space-between;
@@ -23,8 +24,8 @@
 			
 			&-border {
 				position: absolute;
-				top: 0;
-				// bottom: 0;
+				// top: 0;
+				bottom: 1px;
 				right: 0;
 				left: 0;
 				/* #ifdef APP-NVUE */
@@ -43,13 +44,13 @@
 					content: '';
 					-webkit-transform: scaleY(0.5);
 					transform: scaleY(0.5);
-					background-color: rgba(0, 0, 0, 0.1);
+					background-color: rgba(0, 0, 0, .3);
 				}
 					/* #endif */
 			}
 		}
 		
-		&-info {
+		&__info {
 			width: 60%;
 			height: 100px;
 			border-radius: 10px 10px;
@@ -57,7 +58,7 @@
 			padding: 10px 8px;
 			font-size: 16px;
 			// background: rgba(255, 128, 128, .1);
-			background: rgba(0, 0, 0, .1);
+			background: rgba(0, 0, 0, .8);
 		
 			// box-shadow: 1px 1px 1px 1px rgba(0,0,0,.1);
 			box-shadow: 0 5px 5px rgba(0, 0, 0, 0.1);
