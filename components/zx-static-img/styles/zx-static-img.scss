@@ -1,6 +1,6 @@
 	// @import "../../../themes/var";
 	/** 使用scss 一定要注意最后的;要加上去!*/
-	$prefix: zx-;
+	@import "../../../themes/var";
 	$zxStaticImg: '#{$prefix}static-img';
 	.#{$zxStaticImg} {
 		display: flex;

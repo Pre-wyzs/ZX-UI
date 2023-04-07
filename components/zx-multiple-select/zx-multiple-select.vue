@@ -1,6 +1,6 @@
 <!-- 下拉多选框 -->
 <template>
-	<view class="zx-multiple-select" :style="{'z-index':zindex}" v-out-click="close">
+	<view class="zx-multiple-select" :style="{...c3vars,'z-index':zindex}" v-out-click="() => active = false"> <!--$这个地方注意一下，不能直接写active = false，因为自定义指令没有支持这个功能-->
 		<view class="zx-multiple-select__container" :class="{ active: active,'zx-multiple-select__containerselect': active  }"
 			@click.stop="handleSelect">
 			<view class="zx-multiple-select__container-disabled" v-if="disabled"></view>
@@ -29,15 +29,14 @@
 				</view>
 			</view>
 			<!-- 图标(禁用/下拉) -->
-			<view class="zx-multiple-select__container-icon" :class="{ disabled: disabled }"><text></text></view>
+			<view class="zx-multiple-select__container-icon" :class="{ disabled: disabled }" @click.stop="handleToggle"><text></text></view>
 		</view>
 		<!-- 下拉选项 -->
 		<transition enter-active-class="animate__animated animate__bounceIn"
 			leave-active-class="animate__animated animate__bounceOut">
 			<scroll-view class="zx-multiple-select__options" :scroll-y="true" v-show="active"
 				@scrolltolower="scrolltolower">
-					<view class="zx-multiple-select__options-addnew" @click.stop="''">
-						<!--这个click是为了防止点击输入框触发收起列表的操作！请不要随便删除!-->
+					<view class="zx-multiple-select__options-addnew" @click.stop="''"> <!--这个click是为了防止点击输入框触发收起列表的操作！请不要随便删除!-->
 						<input class="zx-multiple-select__options-addnew-input" placeholder="请输入新的选项" v-model="newItemName" />
 						<uni-icons type="checkmarkempty" size="20" :color="newItemName.length>0?`#45b984`:`#fff`"
 							@click="newItemName.length>0?insureAdd():''"></uni-icons>
@@ -60,6 +59,7 @@
 </template>
 
 <script>
+	import c3vars from '../../themes/var.js'
 	const outClick = {
 		// 初始化绑定指令
 		bind(el, binding, vnode) {
@@ -139,6 +139,7 @@
 		},
 		data() {
 			return {
+				c3vars,
 				active: false, //组件是否激活，
 				realValue: [],
 				newItemName: '',
@@ -173,9 +174,6 @@
 				this.realValue = this.changevalue.map(el => el[this.svalue])
 		},
 		methods: {
-			close(e) {
-				this.active = false
-			},
 			scrolltolower() {
 				if (this.isPaging) {
 					this.$emit('scrolltolower')
@@ -185,6 +183,10 @@
 			handleSelect() {
 				if (this.disabled) return
 				this.active = true
+			},
+			handleToggle() {
+				if (this.disabled) return
+				this.active = !this.active
 			},
 			//移除数据
 			handleRemove(index) {
@@ -246,7 +248,6 @@
 		}
 	}
 </script>
-
 <style lang="scss">
 @import "styles/zx-multiple-select";
 </style>

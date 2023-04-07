@@ -1,5 +1,5 @@
 	
-	$prefix: zx-;
+	@import "../../../themes/var";
 	$zxMultipleSelect: '#{$prefix}multiple-select';
 	/** 关闭图片的icon */
 	@mixin icon-close {
@@ -166,7 +166,7 @@
 			}
 		}
 		&__containerselect {
-			border: 1px solid #409eff !important;
+			border: 1px solid $primary-color !important;
 			box-shadow: 0 3px 3px rgba(64, 158, 255, .1) !important;
 		}
 		// options部分
@@ -194,7 +194,7 @@
 				font-size: 14px;
 
 				&.active {
-					color: #409eff;
+					color: $primary-color;
 					background-color: #f5f7fa
 				}
 
@@ -209,7 +209,7 @@
 			&-addnew {
 				margin: 16rpx 20rpx 12rpx 20rpx;
 				padding-bottom: 16rpx;
-				border-bottom: 1px solid #409eff;
+				border-bottom: 1px solid $primary-color;
 				display: flex;
 				align-items: center;
 				

@@ -1,13 +1,22 @@
 <!-- 表单生成器 -->
+<!-- 
+ TODO：
+ 1、动态表单的样式配置函数执行问题？
+ 2、uni-icon图标字体的显示问题
+ 
+ -->
 <template>
 	<view class="zx-form-generator">
 		<view v-for="(item,i) in formConfig" :key="i">
 			<block v-for="(type,j) in formTypes" :key="j">
-				<view v-if="item.type === type" class="zx-form-generator__item">
+				<view v-if="item.type === type" class="zx-form-generator__item" 
+				:style="item.style || {background: '#fff'}"> <!-- $新增功能，可以给可以配置每一项的背景颜色 -->
 					<view class="zx-form-generator__item-title">
 						<view class="zx-form-generator__item-title-left">
 							<text class="zx-form-generator__item-title-left-required" v-if="itemRequired(item)">*</text>
-							<text>{{`${item.title}`}}</text>
+							<slot :name="type + 'Left'" :item="item">
+								<text>{{`${item.title}`}}</text>
+							</slot>
 						</view>
 						<view class="zx-form-generator__item-title-right">
 							<slot :name="type + 'Right'" :item="item"></slot>
@@ -24,6 +33,9 @@
 			<view v-if="item.children">
 				<zx-form-generator :formConfig="item.children" :styleConfig="styleConfig" :requierd="requierd"
 					:border="border" :formTypes="formTypes">
+					<template #[el.left]="{item}" v-for="el in formTypesLoc">
+						<slot :name="el.left" :item="item"></slot>
+					</template>
 					<!-- 右边的内容渲染 -->
 					<template #[el.right]="{item}" v-for="el in formTypesLoc">
 						<slot :name="el.right" :item="item"></slot>
@@ -95,13 +107,13 @@
 		computed: {
 			formTypesLoc() {
 				return this.formTypes.map(el => ({
+					left: el + 'Left',
 					right: el + 'Right',
 					body: el + 'Body'
 				}))
 			}
 		},
 		created() {
-			console.log('子组件创建成功Le');
 			// 如果传了样式配置函数就可以进行单独的样式配置了
 			this.styleConfig && this.styleConfig(this.formConfig)
 		},
