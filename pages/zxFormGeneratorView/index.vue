@@ -24,6 +24,7 @@
 	</view>
 </template>
 <script>
+
 	import {
 		formConfig,
 		deepCopy
@@ -48,6 +49,12 @@
 					if (el.title === '监测对象') {
 						el.required = false
 						el.border = true
+						el.style = {
+							'background': 'blue',
+							'font-size': '16px',
+							'font-weight': 700
+							
+						}
 					}
 				})
 			},
@@ -70,6 +77,7 @@
 <style lang="scss">
 	.container {
 		padding: 16px 16px;
+		// background: red;
 		// box-sizing: border-box;
 	}
 </style>

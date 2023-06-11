@@ -1,8 +1,9 @@
 <!-- 下拉多选框 -->
 <template>
-	<view class="zx-multiple-select" :style="{...c3vars,'z-index':zindex}" v-out-click="() => active = false"> <!--$这个地方注意一下，不能直接写active = false，因为自定义指令没有支持这个功能-->
-		<view class="zx-multiple-select__container" :class="{ active: active,'zx-multiple-select__containerselect': active  }"
-			@click.stop="handleSelect">
+	<view class="zx-multiple-select" :style="{...c3vars,'z-index':zindex}" v-out-click="() => active = false">
+		<!--$这个地方注意一下，不能直接写active = false，因为自定义指令没有支持这个功能-->
+		<view class="zx-multiple-select__container"
+			:class="{ active: active,'zx-multiple-select__containerselect': active  }" @click.stop="handleSelect">
 			<view class="zx-multiple-select__container-disabled" v-if="disabled"></view>
 			<!-- 清空 -->
 			<view class="zx-multiple-select__container-clear"
@@ -12,8 +13,7 @@
 			<!-- 显示框 -->
 			<view class="zx-multiple-select__container-show">
 				<template v-if="changevalue.length">
-					<view class="zx-multiple-select__container-show-item" v-for="(item, index) in changevalue"
-						:key="index">
+					<view class="zx-multiple-select__container-show-item" v-for="(item, index) in changevalue" :key="index">
 						<view class="zx-multiple-select__container-show-item-label">
 							{{ item[slabel] }}
 						</view>
@@ -24,35 +24,34 @@
 				</template>
 				<!-- 搜索框 -->
 				<view class="zx-multiple-select__container-show-search">
-					<input type="text" :placeholder="changevalue.length>0?'':placeholder"
-						:placeholder-style="`font-size:12px;`" @blur="onBlur" v-model="searchKey" />
+					<input type="text" :placeholder="changevalue.length>0?'':placeholder" :placeholder-style="`font-size:12px;`"
+						@blur="onBlur" v-model="searchKey" />
 				</view>
 			</view>
 			<!-- 图标(禁用/下拉) -->
-			<view class="zx-multiple-select__container-icon" :class="{ disabled: disabled }" @click.stop="handleToggle"><text></text></view>
+			<view class="zx-multiple-select__container-icon" :class="{ disabled: disabled }" @click.stop="handleToggle">
+				<text></text></view>
 		</view>
 		<!-- 下拉选项 -->
 		<transition enter-active-class="animate__animated animate__bounceIn"
 			leave-active-class="animate__animated animate__bounceOut">
-			<scroll-view class="zx-multiple-select__options" :scroll-y="true" v-show="active"
-				@scrolltolower="scrolltolower">
-					<view class="zx-multiple-select__options-addnew" @click.stop="''"> <!--这个click是为了防止点击输入框触发收起列表的操作！请不要随便删除!-->
-						<input class="zx-multiple-select__options-addnew-input" placeholder="请输入新的选项" v-model="newItemName" />
-						<uni-icons type="checkmarkempty" size="20" :color="newItemName.length>0?`#45b984`:`#fff`"
-							@click="newItemName.length>0?insureAdd():''"></uni-icons>
+			<scroll-view class="zx-multiple-select__options" :scroll-y="true" v-show="active" @scrolltolower="scrolltolower">
+				<view class="zx-multiple-select__options-addnew" @click.stop="''"> <!--这个click是为了防止点击输入框触发收起列表的操作！请不要随便删除!-->
+					<input class="zx-multiple-select__options-addnew-input" placeholder="请输入新的选项" v-model="newItemName" />
+					<uni-icons type="checkmarkempty" size="20" :color="newItemName.length>0?`#45b984`:`#fff`"
+						@click="newItemName.length>0?insureAdd():''"></uni-icons>
+				</view>
+				<template v-if="optionsLoc.length > 0">
+					<view class="zx-multiple-select__options-item" :class="{ active: include(changevalue, item, slabel) > -1 }"
+						v-for="(item, index) in optionsLoc" :key="index" @click.stop="handleChange(item)">
+						{{ item[slabel] }}
 					</view>
-					<template v-if="optionsLoc.length > 0">
-						<view class="zx-multiple-select__options-item"
-							:class="{ active: include(changevalue, item, slabel) > -1 }"
-							v-for="(item, index) in optionsLoc" :key="index" @click.stop="handleChange(item)">
-							{{ item[slabel] }}
-						</view>
-					</template>
-					<template v-else>
-						<view class="zx-multiple-select__options-noresult">
-							没有结果...
-						</view>
-					</template>
+				</template>
+				<template v-else>
+					<view class="zx-multiple-select__options-noresult">
+						没有结果...
+					</view>
+				</template>
 			</scroll-view>
 		</transition>
 	</view>
@@ -167,10 +166,18 @@
 			searchKey(val) {
 				// 优美的代码，这里如果val是 ''的话，那么所有的选项中都包含''，所以所有的列表都会展示出来的。根本就不需要什么缓存。。。
 				this.optionsLoc = this.options.filter(el => el[this.slabel].includes(val))
+			},
+			/** @这段代码的意义在于，如果当changevalue不是在初始化的时候传递进来的，就没有在created钩子中对realValue进行同步对吧,
+				所以对它进行监听，保障changeValue和realValue是同步的。
+			*/
+			changevalue(val) {
+				if (val.length != this.realValue.length) {
+					this.realValue = val.map(el => el[this.svalue])
+				}
 			}
 		},
 		created() {
-			if (this.changevalue.length > 0)  //说明有初始的数据的
+			if (this.changevalue.length > 0) //说明有初始的数据的
 				this.realValue = this.changevalue.map(el => el[this.svalue])
 		},
 		methods: {
@@ -249,5 +256,5 @@
 	}
 </script>
 <style lang="scss">
-@import "styles/zx-multiple-select";
+	@import "styles/zx-multiple-select";
 </style>

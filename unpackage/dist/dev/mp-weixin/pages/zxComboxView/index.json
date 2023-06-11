@@ -1,6 +1,0 @@
-{
-  "navigationBarTitleText": "下拉输入框",
-  "usingComponents": {
-    "zx-combox": "/components/zx-combox/zx-combox"
-  }
-}

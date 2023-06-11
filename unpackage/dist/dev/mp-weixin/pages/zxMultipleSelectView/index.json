@@ -1,6 +1,0 @@
-{
-  "navigationBarTitleText": "下拉多选",
-  "usingComponents": {
-    "zx-multiple-select": "/components/zx-multiple-select/zx-multiple-select"
-  }
-}

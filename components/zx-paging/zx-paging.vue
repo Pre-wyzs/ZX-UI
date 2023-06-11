@@ -1,7 +1,7 @@
 <template>
 
 	<!-- 自定义的分页组件，主要用来解决之前不能进行下拉刷新的问题 -->
-	<scroll-view scroll-y="true" :style="styles" refresher-enabled :refresher-triggered="triggered"
+	<scroll-view :scroll-y="scrollY" :style="styles" :refresher-enabled="refresh" :refresher-triggered="triggered"
 		@refresherrefresh="onRefresh()" @scrolltolower="loadMore()" :refresher-background="pulldownBackground">
 		<!-- 中间内容 -->
 		<slot name="items" :dataList="dataList"></slot>
@@ -12,7 +12,9 @@
 			<slot name="empty">
 				<image src="https://frontend-dev.oss-cn-hangzhou.aliyuncs.com/modules/mall/common/ic-mall-empty.png"
 					style="width: 152rpx; height: 128rpx;"></image>
-				<text class="pt-16" style="color: #999;"><slot>暂无商品</slot></text>
+				<text class="pt-16" style="color: #999;">
+					<slot>暂无商品</slot>
+				</text>
 			</slot>
 		</view>
 	</scroll-view>
@@ -31,26 +33,39 @@
 			// scroll样式，主要是用来设置高度的
 			styles: {
 				type: Object,
-				default: {
+				default: () => ({
 					heigth: `100vh`
-				},
+				}),
 				required: false
 			},
 			// 请求参数
 			params: {
 				type: Object,
-				default: () => {
-					return {
-						pageNo:1,
-						pageSize:10
-					}
-				},
+				default: () => ({
+					pageNo: 1,
+					pageSize: 10
+				}),
 				required: true
 			},
 			// 下拉背景色
 			pulldownBackground: {
 				type: String,
 				default: `#F6F7F8`,
+			},
+			// 是否在组件创建时自动加载数据
+			isAuto: {
+				type: Boolean,
+				default: true
+			},
+			// 是否开启下拉刷新的功能
+			refresh: {
+				type: Boolean,
+				default: true
+			},
+			// 是否开启上拉加载的功能
+			scrollY: {
+				type: Boolean,
+				default: true
 			}
 		},
 		data() {
@@ -70,7 +85,9 @@
 		// 	this.loadData()
 		// },
 		created() {
-			this.loadData()
+			if (!!this.isAuto) {
+				this.loadData()
+			}
 		},
 		computed: {
 			queryParams: {
@@ -89,6 +106,7 @@
 						if (this.queryParams.pageNo == 1) {
 							this.dataList = res.result.records
 						} else {
+							
 							this.dataList = this.dataList.concat(res.result.records)
 						}
 
@@ -101,10 +119,9 @@
 					})
 			},
 			onRefresh(isTreggered = true) {
-				if (isTreggered) {  //默认触发，可以填入false让下拉刷新不触发
+				if (isTreggered) { //默认触发，可以填入false让下拉刷新不触发
 					this.triggered = true
 				}
-				
 				this.queryParams.pageNo = 1
 				this.loadData()
 			},
@@ -114,8 +131,12 @@
 				}
 				this.queryParams.pageNo++
 				this.loadData()
-			},
+			}
 		}
 	}
 </script>
-<style></style>
+<style>
+	scroll-view {
+		box-sizing: border-box;
+	}
+</style>

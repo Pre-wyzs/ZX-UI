@@ -1,1 +1,0 @@
-<uni-easyinput bind:input="__e" vue-id="7b2a9a16-3" placeholder="请输入内容" styles="{{$root.a1}}" value="{{item.value}}" data-event-opts="{{[['^input',[['__set_model',['$0','value','$event',[]],['item']]]]]}}" bind:__l="__l"></uni-easyinput>

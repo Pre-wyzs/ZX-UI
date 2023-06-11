@@ -7,13 +7,18 @@
 				:showClearIcon="true"
 				@change="change" 
 				:disabled="false"	></zx-multiple-select>
+				<view class="content__button" @click.stop="togglePrimary">
+					切换颜色
+				</view>
 	</view>
 </template>
 
 <script>
+	import c3var from '../../themes/var.js'
 	export default {
 		data() {
 			return {
+				c3var,
 				//字典列表
 				options: [{
 					label: 'label1',
@@ -103,6 +108,9 @@
 		// 	];
 		// },
 		methods: {
+			togglePrimary() {
+					this.c3var['--primary-color'] = '#cc99ff'
+			},
 			handleClick(){
 				this.$refs.selectCyRef.close()
 			},
@@ -113,7 +121,7 @@
                 //datalist已经实现双向绑定了，请不要在这个回调中尝试去改变this.datalist!
 			},
 			scrolltolower(){
-				console.log('触发分页~这里改变传入的value')
+				// console.log('触发分页~这里改变传入的value')
 				this.options.push(...[{
 					label: 'label10',
 					value: '可靠么10'
@@ -147,6 +155,16 @@
 
 		.btn {
 			margin-top: 20px;
+		}
+		
+		&__button {
+			margin-top: 300px;
+			width: 120px;
+			text-align: center;
+			line-height: 60px;
+			border: 1px solid red;
+			color: red;
+			
 		}
 	}
 </style>

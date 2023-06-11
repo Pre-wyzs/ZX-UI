@@ -19,6 +19,9 @@
 			图片组件
 		</view>
 		
+		<view class="item" style="text-align: center;font-weight: bold;" @click="jumpTo('../zxPickerDateView/index')">
+			日期PICKER
+		</view>
 	</view>
 </template>
 <script>

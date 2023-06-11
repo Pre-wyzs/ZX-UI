@@ -1,0 +1,22 @@
+	.zx-picker-date {
+		padding-left: 10px;
+		padding-right: 10px;
+		border: 1px solid #dcdfe6;
+		height: 35px;
+		border-radius: 4px;
+		width: 448rpx;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		font-size: 24rpx;
+		
+		&__placeholder {
+			color: #999;
+		}
+		
+		&__picker-on {
+			border: 1px solid  #ff0000 !important;
+		}
+	}
+	
+	

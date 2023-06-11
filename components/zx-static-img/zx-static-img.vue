@@ -119,7 +119,7 @@
 			},
 			imageListFunc() { // 优美的代码
 				let images = this.images
-				// 这个组件对于加载base64的图片是问题的，这个还需要解决
+				// 这个组件对于加载base64的图片是问题的，最好现在外面
 				if (typeof this.images === 'string')
 					images = this.images.split(',') // 覆盖操作
 
@@ -145,7 +145,6 @@
 
 <style lang="scss">
 	@import "styles/zx-static-img";
-
 	image {
 		vertical-align: middle;
 	}
